@@ -1,5 +1,7 @@
 from django.db import models
+from django.db.models import Sum
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
 
 from . import choices
 
@@ -14,36 +16,44 @@ class Building(models.Model):
     def __str__(self):
         return self.name
 
-
-class Citizen(models.Model):
-    first_name = models.CharField(max_length=55)
-    last_name = models.CharField(max_length=55)
-    phone = models.CharField(max_length=16)
-    email = models.EmailField(max_length=254)
-    role = models.CharField(max_length=55, choices=choices.CitizenRole, default=choices.CitizenRole.RESIDENT)
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
-
   
 class Flat(models.Model):
     building = models.ForeignKey(Building, on_delete=models.CASCADE)
     flat_number = models.PositiveSmallIntegerField()
+    floor = models.PositiveSmallIntegerField()
     ideal_parts = models.DecimalField(max_digits=5, decimal_places=2, validators=[MaxValueValidator(100), MinValueValidator(0)])
     last_update = models.DateField(auto_now=True)
 
+    # check if ideal_parts of the flats exceed 100% and return error if so 
+    def clean(self):
+        total = (
+            Flat.objects
+            .exclude(pk=self.pk)  # important for updates
+            .aggregate(sum=Sum("ideal_parts"))["sum"]
+            or 0
+        )
+
+        if total + self.ideal_parts > 100:
+            free = 100 - total
+            raise ValidationError({
+                "ideal_parts": f"Total allocation cannot exceed 100%. You can add max {free}% ideal parts."
+            })
+
     def __str__(self):
-        return f"{self.building} flat. {self.flat_number}"
+        return f"{self.building} ап. {self.flat_number}"
     
     class Meta:
         unique_together = ['building', 'flat_number']
 
 
 class FlatResident(models.Model):
+    first_name = models.CharField(max_length=55)
+    last_name = models.CharField(max_length=55)
+    phone = models.CharField(max_length=16, blank=True, null=True)
+    email = models.EmailField(max_length=254, blank=True, null=True)
     flat = models.ForeignKey(Flat, on_delete=models.CASCADE)
-    citizen = models.ForeignKey(Citizen, on_delete=models.PROTECT)
     role = models.CharField(max_length=50, choices=choices.FlatRole, default=choices.FlatRole.RESIDENT)
 
     def __str__(self):
-        return f"{self.flat} {self.citizen}"
+        return f"{self.first_name} {self.last_name} {self.flat}"
 

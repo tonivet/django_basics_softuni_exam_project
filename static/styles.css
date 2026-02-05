@@ -1,9 +1,27 @@
+body {
+    font-family: 'Nunito';
+}
 
-/* set a max-width for horizontal fluid layout and make it centered */
-.container-fluid {
-  margin-right: auto;
-  margin-left: auto;
-  max-width: 1120px;
+#hero {
+  background-image: url("/static/images/building.jpg");
+  background-size:cover;
+  background-position: center;
+  position: relative;
+  min-height: 50vh;
+  color: white;
+}
+
+.color-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.3);
+}
+
+
+#not-found-img {
+  width: auto;
+  height: 128px;
 }
 
 .playwrite-nz-basic-normal {
@@ -12,4 +30,5 @@
   font-weight: 400;
   font-style: normal;
 }
+
 

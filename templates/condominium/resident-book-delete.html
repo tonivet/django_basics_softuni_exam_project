@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="d-flex flex-column justify-content-center align-items-center">
+    <h2 class="mt-4">Изтрий данни за обитател</h2>
+    <div class="card w-50">
+        <div class="card-body">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.errors }}
+        {% for field in form %}
+            <div class="form-group mb-3">
+                {{ field }}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn w-100 btn-outline-danger">Изтрий</button>
+    </form>
+    </div>
+    </div>
+    </div>
+{% endblock %}

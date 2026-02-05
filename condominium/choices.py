@@ -6,7 +6,7 @@ class CitizenRole(TextChoices):
     RESIDENT = 'Resident', 'Resident'
 
 class FlatRole(TextChoices):
-    OWNER = 'Owner', 'owner'
-    RESIDENT = 'Resident', 'resident'
-    TENANT = 'Tenant', 'tenant'
-    PET = 'Pet', 'pet'
+    OWNER = 'Owner', 'собственик'
+    RESIDENT = 'Resident', 'живущ'
+    TENANT = 'Tenant', 'наемател'
+    PET = 'Pet', 'домашен любимец'
