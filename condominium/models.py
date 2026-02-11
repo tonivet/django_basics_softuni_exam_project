@@ -55,5 +55,5 @@ class FlatResident(models.Model):
     role = models.CharField(max_length=50, choices=choices.FlatRole, default=choices.FlatRole.RESIDENT)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} {self.flat}"
+        return f"{self.first_name} {self.last_name}"
 

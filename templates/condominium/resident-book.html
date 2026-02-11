@@ -20,7 +20,7 @@
           <label class="mt-2">По категория:</label>
           <div class="ms-2 me-2">
             <select name="role" class="form-control" id="statusSelect">
-            <option value="">- - - -</option>
+            <option value="">Всички</option>
             {% for value in roles %}
             <option value="{{ value.role }}">{{ value.role }}</option>
             {% endfor %}
@@ -30,7 +30,7 @@
                 <button class="btn btn-outline-secondary" type="submit">Филтрирай</button>
             </div>
         </form>
-
+    <!-- add resident -->
       <div class="ms-auto">
         <a href="{% url 'resident-book-create' %}" class="btn btn-outline-primary ms-auto">Добави обитател</a>
       </div>
@@ -53,7 +53,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for resident in residents %}
+        {% for resident in queryset %}
           <tr>
             <td>{{ forloop.counter }}</td>
             <td>{{ resident.first_name }}</td>
@@ -71,36 +71,6 @@
       </tbody>
   </table>
 
-<!-- paginator -->
-  <nav aria-label="Page navigation example" class="d-flex">
-  <ul class="pagination ms-auto">
-    {% if residents.has_previous %}
-    <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
-    <li class="page-item"><a class="page-link" href="?page={{ residents.previous_page_number }}">Previous</a></li>
-    {% endif %}
-    <li class="page-item"><p class="page-link">Page {{residents.number}} of {{ residents.paginator.num_pages }}</p></li>
-    {% if residents.has_next %}
-    <li class="page-item"><a class="page-link" href="?page={{ residents.next_page_number }}">Next</a></li>
-    <li class="page-item"><a class="page-link" href="?page={{ residents.paginator.num_pages }}">Last</a></li>
-    {% endif %}
-  </ul>
-</nav>
-
-<!-- add selected tag to last selected option -->
-<script>
-  const select = document.getElementById('statusSelect');
-  const storageKey = 'statusSelectValue';
-
-  // Restore after reload
-  const saved = localStorage.getItem(storageKey);
-  if (saved) {
-    select.value = saved;
-  }
-
-  // Save on change
-  select.addEventListener('change', function () {
-    localStorage.setItem(storageKey, this.value);
-  });
-</script>
+{% include 'paginator.html' %}
 
 {% endblock %}

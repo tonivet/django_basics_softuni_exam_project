@@ -16,10 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
 
 from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('condominium.urls')),
+    path('announcements/', include('announcements.urls')),
+    # to be deleted after everything is done!
+    path('under-construction/', TemplateView.as_view(template_name='under-construction.html'), name='under-construction'),
 ] + debug_toolbar_urls()

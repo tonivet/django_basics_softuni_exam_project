@@ -2,16 +2,31 @@
 
 <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
   <div class="container-fluid col-md-9">
-    <a class="navbar-brand" href="{% url 'homepage' %}"><img style="width: auto; height: 32px;" src="{% static 'images/home.png' %}" alt="Home"></a>
+    <a class="navbar-brand" href="{% url 'homepage' %}"><img style="width: auto; height: 32px;" src="{% static 'images/navbar_logo.png' %}" alt="Home"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav ms-auto">
-        <a class="nav-link active" aria-current="page" href="{% url 'resident-book' %}">Домова книга</a>
-        <a class="nav-link" href="#">Сметки</a>
-        <a class="nav-link" href="#">Табло</a>
+        <a class="nav-link" href="{% url 'under-construction' %}">Сметки</a>
+        <a class="nav-link" href="{% url 'announcements-list' %}">Табло</a>
+        <a class="nav-link" aria-current="page" href="{% url 'resident-book' %}">Домова книга</a>
+        <a class="nav-link" href="{% url 'under-construction' %}">Документи</a>
       </div>
     </div>
   </div>
 </nav>
+
+<script>
+// Get all the links in the navbar-nav div
+const navLinks = document.querySelectorAll('.navbar-nav a');
+
+// Loop through each link and check if its href attribute matches the current URL pathname
+navLinks.forEach(link => {
+  const href = link.getAttribute('href');
+  if (window.location.pathname === href) {
+    link.classList.add('active'); // Add the active class to the link
+  }
+});
+</script>
+

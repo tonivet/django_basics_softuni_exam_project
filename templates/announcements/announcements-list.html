@@ -1,0 +1,64 @@
+{% extends 'base.html'  %}
+{% load static %}
+
+{% block content %}
+      <h3 class="mt-3 mb-3 text-center">Табло за съобщения</h3>
+    <div class="d-flex mb-2">
+    <!-- filter form -->
+        <form method="GET" class="form-inline d-flex ms-auto">
+          <label class="mt-2">Статус:</label>
+          <div class="ms-2 me-2">
+            <select name="status" class="form-control" id="statusSelect">
+            <option value="">Всички</option>
+            {% for value in status_filters %}
+            <option value="{{ value.status }}">{{ value.status }}</option>
+            {% endfor %}
+            </select>
+          </div>
+            <div>
+                <button class="btn btn-outline-secondary" type="submit">Филтрирай</button>
+            </div>
+        </form>
+    <!-- add announcement button -->
+        <div class="ms-auto">
+            <a href="{% url 'announcements-create' %}" class="btn btn-outline-primary ms-auto">Добави съобщение</a>
+        </div>
+  </div>  
+
+<!-- announcements  -->
+    <div class="accordion mt-3 mb-3" id="accordionExample">
+        {%for announcement in queryset %}
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="heading{{announcement.id}}">
+                <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{announcement.id}}" aria-expanded="true" aria-controls="collapse{{announcement.id}}">
+                    <div class="d-flex flex-fill">
+                        <div>{{ announcement.created_at|date:"j M Y" }}</div> <div class="ms-2">{{ announcement.title }}</div> 
+                        <div class="
+                          {% if announcement.status == 'Done' %} 
+                            text-success 
+                          {% elif announcement.status == 'In Progress' %}
+                            text-warning
+                          {% elif announcement.status == 'Accepted'  %}
+                            text-primary
+                          {% endif %}  ms-auto me-2">{{ announcement.status }}</div>
+                    </div>
+                </button>
+              </h2>
+              <div id="collapse{{announcement.id}}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{announcement.id}}" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  <div>
+                    {{ announcement.text }}
+                  </div>
+                  <div class="mt-2">
+                    Автор: {{ announcement.author }}
+                  </div>
+                    
+                </div>
+              </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% include 'paginator.html' %}
+
+{% endblock %}

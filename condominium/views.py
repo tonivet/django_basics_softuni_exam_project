@@ -31,9 +31,9 @@ def resident_book(request):
 
     p = Paginator(queryset, 10)
     page = request.GET.get('page')
-    residents = p.get_page(page)
+    queryset = p.get_page(page)
 
-    return render(request, 'condominium/resident-book.html', {'residents':residents ,'search_form': search_form, 'roles': roles})
+    return render(request, 'condominium/resident-book.html', {'queryset':queryset ,'search_form': search_form, 'roles': roles})
 
 
 def resident_book_create(request):
