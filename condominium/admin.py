@@ -17,6 +17,8 @@ class FlatAdmin(admin.ModelAdmin):
 @admin.register(models.FlatResident)
 class FlatResidentsAdmin(admin.ModelAdmin):
     list_display = ['first_name', 'last_name', 'role', 'flat']
+    list_filter = ['role']
+    search_fields = ['first_name', 'last_name']
 
 
 

@@ -19,5 +19,16 @@ class FlatResidentForm(forms.ModelForm):
 class FlatResidentDeleteForm(DisableFormFieldsMixin, FlatResidentForm):
     ...
 
+class ResidentRoleFilterForm(forms.ModelForm):
+    class Meta:
+        model = FlatResident
+        fields = ['role']
 
+
+class ResidentSearchForm(forms.Form):
+    query = forms.CharField(
+        max_length=100,
+        label='',
+        required=False,
+    )
 
