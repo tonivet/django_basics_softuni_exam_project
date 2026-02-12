@@ -2,6 +2,7 @@ from django import forms
 
 from .models import FlatResident
 from .mixin import DisableFormFieldsMixin
+from .choices import FlatRole
 
 class FlatResidentForm(forms.ModelForm):
     class Meta:
@@ -19,10 +20,13 @@ class FlatResidentForm(forms.ModelForm):
 class FlatResidentDeleteForm(DisableFormFieldsMixin, FlatResidentForm):
     ...
 
-class ResidentRoleFilterForm(forms.ModelForm):
-    class Meta:
-        model = FlatResident
-        fields = ['role']
+
+class ResidentRoleFilterForm(forms.Form):
+    # adding empty string to the list of choices with all value to be able to clear previous filters and show all 
+    role = forms.ChoiceField(
+        choices=[('', "Всички")] + list(FlatRole.choices),  
+        required=False
+    )
 
 
 class ResidentSearchForm(forms.Form):

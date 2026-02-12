@@ -2,6 +2,8 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
+from django.conf import settings
+
 
 from .models import FlatResident
 from .forms import FlatResidentForm, FlatResidentDeleteForm, ResidentSearchForm, ResidentRoleFilterForm
@@ -14,26 +16,29 @@ def homepage(request):
 
 def resident_book(request):
     queryset = FlatResident.objects.select_related('flat').select_related('flat__building').all().order_by('flat')
-    roles = FlatResident.objects.values('role').distinct()
 
     search_form = ResidentSearchForm(request.GET or None)
-    role_filter_form = ResidentRoleFilterForm(request.GET or None)
+    filter_form = ResidentRoleFilterForm(request.GET or None)
 
+    # search for resident by their first or last name
     if 'query' in request.GET:
         if search_form.is_valid():
             search_value = search_form.cleaned_data['query']
             queryset = queryset.filter(Q(first_name__icontains=search_value) | Q(last_name__icontains=search_value))
 
+    # filter residents by their role
     if 'role' in request.GET:
-        if role_filter_form.is_valid():
-            role_value = role_filter_form.cleaned_data['role']
-            queryset = queryset.filter(Q(role__iexact=role_value))
+        if filter_form.is_valid():
+            role_value = filter_form.cleaned_data['role']
+            # checks if value is not empty then to apply selected filter
+            if role_value:
+                queryset = queryset.filter(role=role_value)
 
-    p = Paginator(queryset, 10)
+    p = Paginator(queryset, settings.RESULTS_PER_PAGE )
     page = request.GET.get('page')
     queryset = p.get_page(page)
 
-    return render(request, 'condominium/resident-book.html', {'queryset':queryset ,'search_form': search_form, 'roles': roles})
+    return render(request, 'condominium/resident-book.html', {'queryset':queryset ,'search_form': search_form, 'roles_filter_form': filter_form})
 
 
 def resident_book_create(request):

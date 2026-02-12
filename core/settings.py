@@ -133,3 +133,5 @@ MEDIA_ROOT = BASE_DIR / 'media'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+RESULTS_PER_PAGE = 7

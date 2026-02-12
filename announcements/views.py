@@ -11,20 +11,20 @@ from .forms import AnnouncementsFrom, StatusFilterForm
 
 def announcements_list(request):
     queryset = Announcements.objects.select_related('author').all().order_by('-created_at')
-    status = Announcements.objects.values('status').distinct()
 
     status_filter_form = StatusFilterForm(request.GET or None)
 
     if 'status' in request.GET:
         if status_filter_form.is_valid():
             status_value = status_filter_form.cleaned_data['status']
-            queryset = queryset.filter(Q(status__iexact=status_value))
+            if status_value:
+                queryset = queryset.filter(status=status_value)
 
     p = Paginator(queryset, 10)
     page = request.GET.get('page')
     queryset = p.get_page(page)
 
-    return render(request, 'announcements/announcements-list.html', {'queryset': queryset, 'status_filters': status})
+    return render(request, 'announcements/announcements-list.html', {'queryset': queryset, 'status_filter_form': status_filter_form})
 
 
 def announcements_create(request):

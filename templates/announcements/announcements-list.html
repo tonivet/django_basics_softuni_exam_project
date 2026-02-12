@@ -6,17 +6,12 @@
     <div class="d-flex mb-2">
     <!-- filter form -->
         <form method="GET" class="form-inline d-flex ms-auto">
-          <label class="mt-2">Статус:</label>
-          <div class="ms-2 me-2">
-            <select name="status" class="form-control" id="statusSelect">
-            <option value="">Всички</option>
-            {% for value in status_filters %}
-            <option value="{{ value.status }}">{{ value.status }}</option>
+          <label class="mt-2 me-2">Статус:</label>
+            {% for value in status_filter_form %}
+              {{ value }}
             {% endfor %}
-            </select>
-          </div>
             <div>
-                <button class="btn btn-outline-secondary" type="submit">Филтрирай</button>
+                <button class="btn btn-outline-secondary ms-2" type="submit">Филтрирай</button>
             </div>
         </form>
     <!-- add announcement button -->
@@ -40,7 +35,7 @@
                             text-warning
                           {% elif announcement.status == 'Accepted'  %}
                             text-primary
-                          {% endif %}  ms-auto me-2">{{ announcement.status }}</div>
+                          {% endif %}  ms-auto me-2">{{ announcement.get_status_display }}</div>
                     </div>
                 </button>
               </h2>

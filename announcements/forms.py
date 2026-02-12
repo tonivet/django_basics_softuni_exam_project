@@ -1,7 +1,7 @@
 from django import forms
 
 from .models import Announcements
-# from condominium.mixin import DisableFormFieldsMixin
+from .choices import StatusChoices
 
 
 class AnnouncementsFrom(forms.ModelForm):
@@ -14,7 +14,8 @@ class AnnouncementsFrom(forms.ModelForm):
             'author': forms.Select(attrs={'class':'form-control'}),
         }
 
-class StatusFilterForm(forms.ModelForm):
-    class Meta:
-        model = Announcements
-        fields = ['status']
+class StatusFilterForm(forms.Form):
+        status = forms.ChoiceField(
+             choices = [('', 'Всички')] + list(StatusChoices.choices),
+             required = False
+        )

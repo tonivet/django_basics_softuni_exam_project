@@ -1,11 +1,9 @@
 from django.db import models
 
+from .choices import StatusChoices
+
 # Create your models here.
 class Announcements(models.Model):
-    class StatusChoices(models.TextChoices):
-        ACCEPTED = 'Accepted', 'Accepted'
-        IN_PROGRESS = 'In Progress', 'In Progress'
-        DONE = 'Done', 'Done'
 
     title = models.CharField(max_length=125)
     text = models.TextField()

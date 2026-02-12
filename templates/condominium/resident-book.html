@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load adjust_counter %}
 
 {% block content %}
 
@@ -17,19 +18,15 @@
 
     <!-- filter form -->
         <form method="GET" class="form-inline d-flex ms-auto">
-          <label class="mt-2">По категория:</label>
-          <div class="ms-2 me-2">
-            <select name="role" class="form-control" id="statusSelect">
-            <option value="">Всички</option>
-            {% for value in roles %}
-            <option value="{{ value.role }}">{{ value.role }}</option>
-            {% endfor %}
-            </select>
-          </div>
+          <label class="mt-2 me-2">Категория:</label>
+              {% for value in roles_filter_form %}
+                {{ value }}
+              {% endfor %}
             <div>
-                <button class="btn btn-outline-secondary" type="submit">Филтрирай</button>
+                <button class="btn btn-outline-secondary ms-2" type="submit">Филтрирай</button>
             </div>
         </form>
+         
     <!-- add resident -->
       <div class="ms-auto">
         <a href="{% url 'resident-book-create' %}" class="btn btn-outline-primary ms-auto">Добави обитател</a>
@@ -55,7 +52,7 @@
       <tbody>
         {% for resident in queryset %}
           <tr>
-            <td>{{ forloop.counter }}</td>
+            <td>{{ forloop.counter|adjust_counter:queryset.number }}</td>
             <td>{{ resident.first_name }}</td>
             <td>{{ resident.last_name }}</td> 
             <td>{{ resident.flat.building }}</td>
@@ -63,7 +60,7 @@
             <td>{{ resident.flat.flat_number }}</td>
             <td>{{ resident.phone|default:"" }}</td>
             <td>{{ resident.email|default:"" }}</td>
-            <td>{{ resident.role }}</td>
+            <td>{{ resident.get_role_display }}</td>
             <td><a href="{% url 'resident-book-edit' resident.id  %}"class="btn btn-outline-warning">Промени</a></td>
             <td><a href="{% url 'resident-book-delete' resident.id %}"class="btn btn-outline-danger">Изтрий</a></td>
           </tr>
