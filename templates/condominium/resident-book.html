@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load adjust_counter %}
 
 {% block content %}
 
@@ -52,7 +51,7 @@
       <tbody>
         {% for resident in queryset %}
           <tr>
-            <td>{{ forloop.counter|adjust_counter:queryset.number }}</td>
+            <td>{{queryset.start_index|add:forloop.counter0 }}</td>
             <td>{{ resident.first_name }}</td>
             <td>{{ resident.last_name }}</td> 
             <td>{{ resident.flat.building }}</td>

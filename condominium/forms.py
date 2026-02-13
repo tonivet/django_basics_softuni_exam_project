@@ -22,17 +22,17 @@ class FlatResidentDeleteForm(DisableFormFieldsMixin, FlatResidentForm):
 
 
 class ResidentRoleFilterForm(forms.Form):
-    # adding empty string to the list of choices with all value to be able to clear previous filters and show all 
     role = forms.ChoiceField(
+        # adding empty string to the list of choices to be able to clear previous filters and show all 
         choices=[('', "Всички")] + list(FlatRole.choices),  
-        required=False
+        required=False,
+        widget = forms.Select(attrs={'class': 'form-control'})
     )
 
 
 class ResidentSearchForm(forms.Form):
     query = forms.CharField(
         max_length=100,
-        label='',
         required=False,
     )
 

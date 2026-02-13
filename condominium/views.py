@@ -34,7 +34,7 @@ def resident_book(request):
             if role_value:
                 queryset = queryset.filter(role=role_value)
 
-    p = Paginator(queryset, settings.RESULTS_PER_PAGE )
+    p = Paginator(queryset, per_page=7)
     page = request.GET.get('page')
     queryset = p.get_page(page)
 

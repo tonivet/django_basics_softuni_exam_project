@@ -20,7 +20,7 @@ def announcements_list(request):
             if status_value:
                 queryset = queryset.filter(status=status_value)
 
-    p = Paginator(queryset, 10)
+    p = Paginator(queryset, per_page=10)
     page = request.GET.get('page')
     queryset = p.get_page(page)
 

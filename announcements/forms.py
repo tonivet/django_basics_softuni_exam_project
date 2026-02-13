@@ -17,5 +17,6 @@ class AnnouncementsFrom(forms.ModelForm):
 class StatusFilterForm(forms.Form):
         status = forms.ChoiceField(
              choices = [('', 'Всички')] + list(StatusChoices.choices),
-             required = False
+             required = False,
+             widget = forms.Select(attrs={'class': 'form-control'})
         )
