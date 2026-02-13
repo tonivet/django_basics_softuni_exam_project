@@ -7,7 +7,7 @@
     <!-- filter form -->
         <form method="GET" class="form-inline d-flex ms-auto">
           <label class="mt-2 me-2">Статус:</label>
-            {% for value in status_filter_form %}
+            {% for value in form %}
               {{ value }}
             {% endfor %}
             <div>
@@ -22,7 +22,7 @@
 
 <!-- announcements  -->
     <div class="accordion mt-3 mb-3" id="accordionExample">
-        {%for announcement in queryset %}
+        {%for announcement in announcements %}
             <div class="accordion-item">
               <h2 class="accordion-header" id="heading{{announcement.id}}">
                 <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{announcement.id}}" aria-expanded="true" aria-controls="collapse{{announcement.id}}">

@@ -1,77 +1,80 @@
-from django.contrib import messages
-from django.core.paginator import Paginator
 from django.db.models import Q
-from django.shortcuts import render, redirect, get_object_or_404
-from django.conf import settings
-
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, ListView, FormView
+from django.urls import reverse_lazy
 
 from .models import FlatResident
+from .mixin import UpdateMessageMixin, DeleteMessageMixin
 from .forms import FlatResidentForm, FlatResidentDeleteForm, ResidentSearchForm, ResidentRoleFilterForm
 
 # Create your views here.
 
-def homepage(request):
-    return render(request, 'condominium/homepage.html')
+class HomePageView(TemplateView):
+    template_name = 'condominium/homepage.html'
 
 
-def resident_book(request):
+class ResidentBookListView(ListView, FormView):
     queryset = FlatResident.objects.select_related('flat').select_related('flat__building').all().order_by('flat')
+    context_object_name = 'residents'
+    template_name = 'condominium/resident-book.html'
+    paginate_by = 7
+    form_class = ResidentSearchForm
 
-    search_form = ResidentSearchForm(request.GET or None)
-    filter_form = ResidentRoleFilterForm(request.GET or None)
+    def get_queryset(self):
+        queryset = super().get_queryset()
 
-    # search for resident by their first or last name
-    if 'query' in request.GET:
-        if search_form.is_valid():
-            search_value = search_form.cleaned_data['query']
-            queryset = queryset.filter(Q(first_name__icontains=search_value) | Q(last_name__icontains=search_value))
+        # Handle search query
+        search_query = self.request.GET.get('query')
+        if search_query:
+            queryset = queryset.filter(
+                Q(first_name__icontains=search_query) |
+                Q(last_name__icontains=search_query)
+            )
 
-    # filter residents by their role
-    if 'role' in request.GET:
-        if filter_form.is_valid():
-            role_value = filter_form.cleaned_data['role']
-            # checks if value is not empty then to apply selected filter
-            if role_value:
-                queryset = queryset.filter(role=role_value)
+        # Handle filter form
+        role_filter = self.request.GET.get('role')
+        if role_filter:
+            queryset = queryset.filter(role=role_filter)
 
-    p = Paginator(queryset, per_page=7)
-    page = request.GET.get('page')
-    queryset = p.get_page(page)
+        return queryset
 
-    return render(request, 'condominium/resident-book.html', {'queryset':queryset ,'search_form': search_form, 'roles_filter_form': filter_form})
-
-
-def resident_book_create(request):
-    form = FlatResidentForm(request.POST or None)
-
-    if request.method == "POST" and form.is_valid():
-        form.save()
-        messages.success(request, f"Данните бяха успешно добавени!")
-        return redirect('resident-book')
-
-    return render(request, 'condominium/resident-book-create.html', {"form": form})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_form'] = self.form_class(self.request.GET or None)
+        context['filter_form'] = ResidentRoleFilterForm(self.request.GET or None)
+        return context
 
 
-def resident_book_edit(request, pk:int):
-    resident = get_object_or_404(FlatResident, pk=pk)
-    form = FlatResidentForm(request.POST or None, instance=resident)
-
-    if request.method == "POST" and form.is_valid():
-        form.save()
-        messages.warning(request, f"Данните за {resident.first_name} {resident.last_name} бяха успешно обновени!")
-        return redirect('resident-book')
-
-    return render(request, 'condominium/resident-book-edit.html', {"form": form})
+class ResidentBookCreateView(SuccessMessageMixin, CreateView):
+    template_name = 'condominium/resident-book-create.html'
+    form_class = FlatResidentForm
+    success_message = "Данните бяха успешно добавени!"
+    success_url = reverse_lazy('resident-book')
 
 
-def resident_book_delete(request, pk:int):
-    resident = get_object_or_404(FlatResident, pk=pk)
-    form = FlatResidentDeleteForm(request.POST or None, instance=resident)
+class ResidentBookUpdateView(UpdateMessageMixin, UpdateView):
+    model = FlatResident
+    template_name = 'condominium/resident-book-edit.html'
+    form_class = FlatResidentForm
+    # obj is class coming form WarningMassageMixin, 
+    # first_name and last_name are attributes to this class coming from the model.
+    update_message = "Данните за {obj.first_name} {obj.last_name} бяха успешно обновени!"
+    success_url = reverse_lazy('resident-book')
 
-    if request.method == "POST" and form.is_valid():
-        resident.delete()
-        messages.error(request, f"Данните за {resident.first_name} {resident.last_name} бяха успешно изтрити!")
-        return redirect('resident-book')
 
-    return render(request, 'condominium/resident-book-delete.html', {"form": form})
+class ResidentBookDeleteView(DeleteMessageMixin, DeleteView):
+    model = FlatResident
+    template_name = 'condominium/resident-book-delete.html'
+    form_class = FlatResidentDeleteForm
+    delete_message = "Данните за {obj.first_name} {obj.last_name} бяха успешно изтрити!"
+    success_url = reverse_lazy('resident-book')
+
+    def get_initial(self):
+        obj = self.get_object()
+        initial = obj.__dict__.copy()
+        # Include foreign key field in delete form
+        initial['flat'] = obj.flat
+        return initial
+
+
 

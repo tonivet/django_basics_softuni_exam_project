@@ -1,38 +1,33 @@
-from django.db.models import Q
-from django.contrib import messages
-from django.core.paginator import Paginator
-from django.shortcuts import render, redirect
-
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic import CreateView, ListView, FormView
+from django.urls import reverse_lazy
 
 from .models import Announcements
 from .forms import AnnouncementsFrom, StatusFilterForm
 
 # Create your views here.
 
-def announcements_list(request):
+class AnnouncementsListView(FormView, ListView):
     queryset = Announcements.objects.select_related('author').all().order_by('-created_at')
+    context_object_name = 'announcements'
+    template_name = 'announcements/announcements-list.html'
+    form_class = StatusFilterForm
+    paginate_by = 6
 
-    status_filter_form = StatusFilterForm(request.GET or None)
-
-    if 'status' in request.GET:
-        if status_filter_form.is_valid():
-            status_value = status_filter_form.cleaned_data['status']
-            if status_value:
-                queryset = queryset.filter(status=status_value)
-
-    p = Paginator(queryset, per_page=10)
-    page = request.GET.get('page')
-    queryset = p.get_page(page)
-
-    return render(request, 'announcements/announcements-list.html', {'queryset': queryset, 'status_filter_form': status_filter_form})
+    def get_queryset(self):
+        queryset = super().get_queryset()
+    
+        status_filter = self.request.GET.get('status')
+        if status_filter:
+            queryset = queryset.filter(status=status_filter)
+        
+        return queryset
 
 
-def announcements_create(request):
-    form = AnnouncementsFrom(request.POST or None)
+class AnnouncementsCreateView(SuccessMessageMixin, CreateView):
+    template_name = 'announcements/announcements-create.html'
+    form_class = AnnouncementsFrom
+    success_message = "Данните бяха успешно добавени!"
+    success_url = reverse_lazy('announcements-list')
 
-    if request.method == "POST" and form.is_valid():
-        form.save()
-        messages.success(request, f"Данните бяха успешно добавени!")
-        return redirect('announcements-list')
 
-    return render(request, 'announcements/announcements-create.html', {"form": form})

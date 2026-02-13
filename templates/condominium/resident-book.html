@@ -18,7 +18,7 @@
     <!-- filter form -->
         <form method="GET" class="form-inline d-flex ms-auto">
           <label class="mt-2 me-2">Категория:</label>
-              {% for value in roles_filter_form %}
+              {% for value in filter_form %}
                 {{ value }}
               {% endfor %}
             <div>
@@ -49,9 +49,9 @@
         </tr>
       </thead>
       <tbody>
-        {% for resident in queryset %}
+        {% for resident in residents %}
           <tr>
-            <td>{{queryset.start_index|add:forloop.counter0 }}</td>
+            <td>{{page_obj.start_index|add:forloop.counter0 }}</td>
             <td>{{ resident.first_name }}</td>
             <td>{{ resident.last_name }}</td> 
             <td>{{ resident.flat.building }}</td>
