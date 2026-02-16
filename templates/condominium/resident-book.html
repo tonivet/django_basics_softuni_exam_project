@@ -27,9 +27,12 @@
         </form>
          
     <!-- add resident -->
-      <div class="ms-auto">
-        <a href="{% url 'resident-book-create' %}" class="btn btn-outline-primary ms-auto">Добави обитател</a>
-      </div>
+      {% if user.is_staff %}
+        <div class="ms-auto">
+          <a href="{% url 'resident-book-create' %}" class="btn btn-outline-primary ms-auto">Добави обитател</a>
+        </div>
+      {% endif %}
+
     </div>
 
     <table class="table table-hover">

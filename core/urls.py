@@ -24,6 +24,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('condominium.urls')),
     path('announcements/', include('announcements.urls')),
+    path('documents/', include('documents.urls')),
+    
     # to be deleted after everything is done!
     path('under-construction/', TemplateView.as_view(template_name='under-construction.html'), name='under-construction'),
 ] + debug_toolbar_urls()

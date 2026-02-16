@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, ListView, FormView
 from django.urls import reverse_lazy
@@ -45,9 +46,10 @@ class ResidentBookListView(ListView, FormView):
         return context
 
 
-class ResidentBookCreateView(SuccessMessageMixin, CreateView):
+class ResidentBookCreateView(SuccessMessageMixin, PermissionRequiredMixin, CreateView):
     template_name = 'condominium/resident-book-create.html'
     form_class = FlatResidentForm
+    permission_required = ["is_staff"]
     success_message = "Данните бяха успешно добавени!"
     success_url = reverse_lazy('resident-book')
 
