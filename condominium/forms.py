@@ -29,10 +29,3 @@ class ResidentRoleFilterForm(forms.Form):
         widget = forms.Select(attrs={'class': 'form-control'})
     )
 
-
-class ResidentSearchForm(forms.Form):
-    query = forms.CharField(
-        max_length=100,
-        required=False,
-    )
-

@@ -1,0 +1,18 @@
+     
+        {% for resident in residents %}
+          <tr>
+            <td>{{page_obj.start_index|add:forloop.counter0 }}</td>
+            <td>{{ resident.first_name }}</td>
+            <td>{{ resident.last_name }}</td> 
+            <td>{{ resident.flat.building }}</td>
+            <td>{{ resident.flat.floor }}</td>
+            <td>{{ resident.flat.flat_number }}</td>
+            <td>{{ resident.phone|default:"" }}</td>
+            <td>{{ resident.email|default:"" }}</td>
+            <td>{{ resident.get_role_display }}</td>
+            <td><a href="{% url 'resident-book-edit' resident.id  %}"class="btn btn-outline-warning">Промени</a></td>
+            <td><a href="{% url 'resident-book-delete' resident.id %}"class="btn btn-outline-danger">Изтрий</a></td>
+          </tr>
+        {% endfor %}
+
+

@@ -2,10 +2,11 @@ from django.db.models import Q
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, ListView, FormView
 from django.urls import reverse_lazy
+from django.shortcuts import render
 
 from .models import FlatResident
 from .mixin import UpdateMessageMixin, DeleteMessageMixin
-from .forms import FlatResidentForm, FlatResidentDeleteForm, ResidentSearchForm, ResidentRoleFilterForm
+from .forms import FlatResidentForm, FlatResidentDeleteForm, ResidentRoleFilterForm
 
 # Create your views here.
 
@@ -18,31 +19,54 @@ class ResidentBookListView(ListView, FormView):
     context_object_name = 'residents'
     template_name = 'condominium/resident-book.html'
     paginate_by = 7
-    form_class = ResidentSearchForm
+    form_class = ResidentRoleFilterForm
+
+
+class ResidentBookSearchView(ListView):
+    model = FlatResident
+    template_name = 'condominium/resident-book-table.html'
+    context_object_name = 'residents'
+    paginate_by = 3
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        query = self.request.GET.get('query', '')
+        queryset = FlatResident.objects.all()
 
-        # Handle search query
-        search_query = self.request.GET.get('query')
-        if search_query:
+        if query:
             queryset = queryset.filter(
-                Q(first_name__icontains=search_query) |
-                Q(last_name__icontains=search_query)
+                Q(first_name__icontains=query) |
+                Q(last_name__icontains=query)
             )
-
-        # Handle filter form
-        role_filter = self.request.GET.get('role')
-        if role_filter:
-            queryset = queryset.filter(role=role_filter)
 
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['search_form'] = self.form_class(self.request.GET or None)
-        context['filter_form'] = ResidentRoleFilterForm(self.request.GET or None)
+        context['query'] = self.request.GET.get('query', '')
         return context
+    
+
+class ResidentBookFilterView(ListView):
+    model = FlatResident
+    template_name = 'condominium/resident-book-table.html'
+    context_object_name = 'residents'
+    paginate_by = 2
+
+    def get_queryset(self):
+        query = self.request.GET.get('role', '')
+        queryset = FlatResident.objects.all()
+
+        if query:
+            queryset = queryset.filter(role=query)
+    
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['role'] = self.request.GET.get('role', '')
+        return context
+        
 
 
 class ResidentBookCreateView(SuccessMessageMixin, CreateView):

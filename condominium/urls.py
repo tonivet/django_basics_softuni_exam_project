@@ -2,6 +2,11 @@ from django.urls import path, include
 
 from . import views
 
+htmx_urlpatterns = [
+    path('search', views.ResidentBookSearchView.as_view(), name='resident-book-search'),
+    path('filter', views.ResidentBookFilterView.as_view(), name='resident-book-filter'),
+]
+
 urlpatterns = [
     path('', views.HomePageView.as_view(), name='homepage'),
     path('resident-book/', include([
@@ -12,4 +17,4 @@ urlpatterns = [
             path('delete/', views.ResidentBookDeleteView.as_view(), name='resident-book-delete'),
         ])),
     ]))
-]
+] + htmx_urlpatterns
