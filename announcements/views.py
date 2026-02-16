@@ -11,8 +11,8 @@ class AnnouncementsListView(FormView, ListView):
     queryset = Announcements.objects.select_related('author').all().order_by('-created_at')
     context_object_name = 'announcements'
     template_name = 'announcements/announcements-list.html'
-    form_class = StatusFilterForm
-    paginate_by = 6
+    form_class = StatusFilterForm   
+    paginate_by = 7
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -22,6 +22,11 @@ class AnnouncementsListView(FormView, ListView):
             queryset = queryset.filter(status=status_filter)
         
         return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter_form'] = StatusFilterForm(self.request.GET or None)
+        return context
 
 
 class AnnouncementsCreateView(SuccessMessageMixin, CreateView):
