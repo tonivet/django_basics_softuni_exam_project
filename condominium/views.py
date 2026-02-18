@@ -14,7 +14,7 @@ class HomePageView(TemplateView):
 
 
 class ResidentBookListView(ListView, FormView):
-    queryset = FlatResident.objects.select_related('flat').select_related('flat__building').all().order_by('flat')
+    queryset = FlatResident.objects.select_related('flat', 'flat__building').all().order_by('flat')
     context_object_name = 'residents'
     template_name = 'condominium/resident-book.html'
     paginate_by = 7
