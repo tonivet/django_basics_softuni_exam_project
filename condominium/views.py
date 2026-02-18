@@ -1,11 +1,10 @@
 from django.db.models import Q
-from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, ListView, FormView
 from django.urls import reverse_lazy
 
 from .models import FlatResident
-from .mixin import UpdateMessageMixin, DeleteMessageMixin
+from .mixin import UpdateDeleteMessageMixin
 from .forms import FlatResidentForm, FlatResidentDeleteForm, ResidentSearchForm, ResidentRoleFilterForm
 
 # Create your views here.
@@ -46,15 +45,14 @@ class ResidentBookListView(ListView, FormView):
         return context
 
 
-class ResidentBookCreateView(SuccessMessageMixin, PermissionRequiredMixin, CreateView):
+class ResidentBookCreateView(SuccessMessageMixin, CreateView):
     template_name = 'condominium/resident-book-create.html'
     form_class = FlatResidentForm
-    permission_required = ["is_staff"]
     success_message = "Данните бяха успешно добавени!"
     success_url = reverse_lazy('resident-book')
 
 
-class ResidentBookUpdateView(UpdateMessageMixin, UpdateView):
+class ResidentBookUpdateView(UpdateDeleteMessageMixin, UpdateView):
     model = FlatResident
     template_name = 'condominium/resident-book-edit.html'
     form_class = FlatResidentForm
@@ -64,7 +62,7 @@ class ResidentBookUpdateView(UpdateMessageMixin, UpdateView):
     success_url = reverse_lazy('resident-book')
 
 
-class ResidentBookDeleteView(DeleteMessageMixin, DeleteView):
+class ResidentBookDeleteView(UpdateDeleteMessageMixin, DeleteView):
     model = FlatResident
     template_name = 'condominium/resident-book-delete.html'
     form_class = FlatResidentDeleteForm

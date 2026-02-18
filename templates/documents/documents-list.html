@@ -4,6 +4,10 @@
 {% block content %}
     <h3 class="mt-3 mb-3 text-center">Документи</h3>
 
+    <div class="ms-auto mb-3">
+        <a href="{% url 'documents-create' %}" class="btn btn-outline-primary ms-auto">Добави документ</a>
+    </div>
+
     <div class="accordion" id="accordionExample">
 
         <div class="accordion-item">
@@ -18,7 +22,10 @@
                     {% if document.type == "Protocol" %}
                             <div class="d-flex border rounded mb-1">
                                 <div class="p-2">{{  document.uploaded_at|date:"j M Y" }}&nbsp;&nbsp;&nbsp;&nbsp;{{ document.title }}</div>
-                                <div class="p-2 ms-auto"><a href="{% url 'document-download' document.pk %}">Изтегли</a></div>
+                                <div class="btn-group ms-auto p-1">
+                                    <a class="btn btn-outline-primary" href="{% url 'document-download' document.pk %}">Изтегли</a>
+                                    <a class="btn btn-outline-danger" href="{% url 'document-delete' document.pk %}">Изтрий</a>
+                                </div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -38,7 +45,10 @@
                     {% if document.type == "Invoice" %}
                             <div class="d-flex border rounded mb-1">
                                 <div class="p-2">{{  document.uploaded_at|date:"j M Y" }}&nbsp;&nbsp;&nbsp;&nbsp;{{ document.title }}</div>
-                                <div class="p-2 ms-auto"><a href="{% url 'document-download' document.pk %}">Изтегли</a></div>
+                                <div class="btn-group ms-auto p-1">
+                                    <a class="btn btn-outline-primary" href="{% url 'document-download' document.pk %}">Изтегли</a>
+                                    <a class="btn btn-outline-danger" href="{% url 'document-delete' document.pk %}">Изтрий</a>
+                                </div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -58,7 +68,10 @@
                     {% if document.type == "Mail" %}
                             <div class="d-flex border rounded mb-1">
                                 <div class="p-2">{{  document.uploaded_at|date:"j M Y" }}&nbsp;&nbsp;&nbsp;&nbsp;{{ document.title }}</div>
-                                <div class="p-2 ms-auto"><a href="{% url 'document-download' document.pk %}">Изтегли</a></div>
+                                <div class="btn-group ms-auto p-1">
+                                    <a class="btn btn-outline-primary" href="{% url 'document-download' document.pk %}">Изтегли</a>
+                                    <a class="btn btn-outline-danger" href="{% url 'document-delete' document.pk %}">Изтрий</a>
+                                </div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -78,7 +91,10 @@
                     {% if document.type == "Other" %}
                             <div class="d-flex border rounded mb-1">
                                 <div class="p-2">{{  document.uploaded_at|date:"j M Y" }}&nbsp;&nbsp;&nbsp;&nbsp;{{ document.title }}</div>
-                                <div class="p-2 ms-auto"><a href="{% url 'document-download' document.pk %}">Изтегли</a></div>
+                                <div class="btn-group ms-auto p-1">
+                                    <a class="btn btn-outline-primary" href="{% url 'document-download' document.pk %}">Изтегли</a>
+                                    <a class="btn btn-outline-danger" href="{% url 'document-delete' document.pk %}">Изтрий</a>
+                                </div>
                             </div>
                         {% endif %}
                     {% endfor %}

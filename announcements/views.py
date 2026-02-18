@@ -1,9 +1,11 @@
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import CreateView, ListView, FormView
+from django.views.generic import CreateView, ListView, FormView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 
 from .models import Announcements
-from .forms import AnnouncementsFrom, StatusFilterForm
+from .forms import AnnouncementsFrom, AnnouncementsUpdateFrom, StatusFilterForm
+
+from condominium.mixin import UpdateDeleteMessageMixin
 
 # Create your views here.
 
@@ -35,4 +37,18 @@ class AnnouncementsCreateView(SuccessMessageMixin, CreateView):
     success_message = "Данните бяха успешно добавени!"
     success_url = reverse_lazy('announcements-list')
 
+
+class AnnouncementsUpdateView(UpdateDeleteMessageMixin, UpdateView):
+    model = Announcements
+    template_name = 'announcements/announcements-edit.html'
+    form_class = AnnouncementsUpdateFrom
+    update_message = "Статуса на {obj.title} беше успешно променен!"
+    success_url = reverse_lazy('announcements-list')
+
+
+class AnnouncementsDeleteView(UpdateDeleteMessageMixin, DeleteView):
+    model = Announcements
+    template_name = 'announcements/announcements-delete.html'
+    delete_message = "Съобщението беше успешно изтрито!"
+    success_url = reverse_lazy('announcements-list')
 

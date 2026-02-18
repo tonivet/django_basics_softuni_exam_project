@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex-fill d-flex flex-column justify-content-center align-items-center">
+  <h2>Изтриване на документ</h2>
+  <p>Сигурен ли сте че искате да изтриете "{{ object.title }}"?</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <a class="btn btn-outline-primary" href="{% url 'documents-list' %}">Откажи</a>
+    <button type="submit" class="btn btn-danger m-3">Изтрий</button>
+  </form>
+</div>
+{% endblock %}

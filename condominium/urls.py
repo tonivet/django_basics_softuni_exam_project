@@ -8,7 +8,7 @@ urlpatterns = [
         path('', views.ResidentBookListView.as_view(), name='resident-book'),
         path('create/', views.ResidentBookCreateView.as_view(), name='resident-book-create'),
         path('<int:pk>/', include([
-            path('edit/', views.ResidentBookUpdateView.as_view(), name='resident-book-edit'),
+            path('update/', views.ResidentBookUpdateView.as_view(), name='resident-book-update'),
             path('delete/', views.ResidentBookDeleteView.as_view(), name='resident-book-delete'),
         ])),
     ]))

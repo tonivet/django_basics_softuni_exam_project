@@ -27,11 +27,9 @@
         </form>
          
     <!-- add resident -->
-      {% if user.is_staff %}
         <div class="ms-auto">
           <a href="{% url 'resident-book-create' %}" class="btn btn-outline-primary ms-auto">Добави обитател</a>
         </div>
-      {% endif %}
 
     </div>
 
@@ -48,7 +46,7 @@
           <th scope="col">email</th>
           <th scope="col">Категория</th>
           <th scope="col"></th>
-          <th scope="col"></th>
+          <!-- <th scope="col"></th> -->
         </tr>
       </thead>
       <tbody>
@@ -63,8 +61,12 @@
             <td>{{ resident.phone|default:"" }}</td>
             <td>{{ resident.email|default:"" }}</td>
             <td>{{ resident.get_role_display }}</td>
-            <td><a href="{% url 'resident-book-edit' resident.id  %}"class="btn btn-outline-warning">Промени</a></td>
-            <td><a href="{% url 'resident-book-delete' resident.id %}"class="btn btn-outline-danger">Изтрий</a></td>
+            <td>
+              <div class="btn-group">
+                <a class="btn btn-outline-warning" href="{% url 'resident-book-update' resident.id  %}">Промени</a>
+                <a class="btn btn-outline-danger" href="{% url 'resident-book-delete' resident.id %}">Изтрий</a>
+              </div>
+            <td>
           </tr>
         {% endfor %}
       </tbody>

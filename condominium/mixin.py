@@ -1,21 +1,15 @@
 from django.contrib import messages
 
-class UpdateMessageMixin:
+class UpdateDeleteMessageMixin:
     update_message = None
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        if self.update_message:
-            # obj is a class
-            messages.warning(self.request, self.update_message.format(obj=self.object))
-        return response
-
-
-class DeleteMessageMixin:
     delete_message = None
 
     def form_valid(self, form):
         response = super().form_valid(form)
+
+        if self.update_message:
+            messages.warning(self.request, self.update_message.format(obj=self.object))
+
         if self.delete_message:
             messages.error(self.request, self.delete_message.format(obj=self.object))
         return response

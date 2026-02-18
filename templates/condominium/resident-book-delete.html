@@ -1,21 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="d-flex flex-column justify-content-center align-items-center">
+
+<div class="d-flex flex-column justify-content-center align-items-center">
     <h2 class="mt-4">Данните за този обитател ще бъдат изтрити!</h2>
     <div class="card w-50">
         <div class="card-body">
-    <form method="post">
-        {% csrf_token %}
-        {{ form.errors }}
-        {% for field in form %}
-            <div class="form-group mb-3">
-                {{ field }}
-            </div>
-        {% endfor %}
-        <button type="submit" class="btn w-100 btn-outline-danger">Изтрий</button>
-    </form>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.errors }}
+                {% for field in form %}
+                    <div class="form-group mb-3">
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <a class="btn btn-outline-primary" href="{% url 'resident-book' %}">Откажи</a>
+                <button type="submit" class="btn btn-outline-danger">Изтрий</button>
+            </form>
+        </div>
     </div>
-    </div>
-    </div>
+</div>
+
 {% endblock %}

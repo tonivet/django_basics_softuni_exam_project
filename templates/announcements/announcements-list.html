@@ -28,15 +28,22 @@
               <h2 class="accordion-header" id="heading{{announcement.id}}">
                 <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{announcement.id}}" aria-expanded="true" aria-controls="collapse{{announcement.id}}">
                     <div class="d-flex flex-fill">
-                        <div>{{ announcement.created_at|date:"j M Y" }}</div> <div class="ms-2">{{ announcement.title }}</div> 
-                        <div class="
-                          {% if announcement.status == 'Done' %} 
-                            text-success 
-                          {% elif announcement.status == 'In Progress' %}
-                            text-warning
-                          {% elif announcement.status == 'Accepted'  %}
-                            text-primary
-                          {% endif %}  ms-auto me-2">{{ announcement.get_status_display }}</div>
+                      <div>
+                        {{ announcement.created_at|date:"j M Y" }}
+                      </div> 
+                      <div class="ms-2">
+                        {{ announcement.title }}
+                      </div> 
+                      <div class="
+                        {% if announcement.status == 'Done' %} 
+                          text-success 
+                        {% elif announcement.status == 'In Progress' %}
+                          text-warning
+                        {% elif announcement.status == 'Accepted'  %}
+                          text-primary
+                        {% endif %}  ms-auto me-2">
+                        {{ announcement.get_status_display }}
+                      </div>
                     </div>
                 </button>
               </h2>
@@ -45,10 +52,15 @@
                   <div>
                     {{ announcement.text }}
                   </div>
-                  <div class="mt-2">
-                    Автор: {{ announcement.author }}
+                  <div class="d-flex">
+                    <div class="mt-2">
+                      Автор: {{ announcement.author }}
+                    </div>
+                    <div class="btn-group ms-auto">
+                      <a class="btn btn-outline-warning" href="{% url 'announcements-update' announcement.pk %}">Промени</a>
+                      <a class="btn btn-outline-danger" href="{% url 'announcements-delete' announcement.pk %}">Изтрий</a>
+                    </div>
                   </div>
-                    
                 </div>
               </div>
             </div>

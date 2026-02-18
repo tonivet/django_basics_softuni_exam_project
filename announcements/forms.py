@@ -14,6 +14,16 @@ class AnnouncementsFrom(forms.ModelForm):
             'author': forms.Select(attrs={'class':'form-control'}),
         }
 
+class AnnouncementsUpdateFrom(forms.ModelForm):
+     class Meta:
+        model = Announcements
+        fields = ['title', 'status']
+        widgets = {
+             'title': forms.TextInput(attrs={'class':'form-control'}),
+             'status': forms.Select(attrs={'class':'form-control'})
+        }
+     
+
 class StatusFilterForm(forms.Form):
         status = forms.ChoiceField(
              choices = [('', 'Всички')] + list(StatusChoices.choices),
