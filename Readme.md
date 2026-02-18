@@ -1,84 +1,82 @@
-# Управление на Приходи и Разходи за Етажна Собственост
+# Management of Income and Expenses for Condominium Properties
 
-## Описание
+## Description
 
-Този проект е Django уеб приложение, предназначено за улесняване на управлението на приходи и разходи в етажна собственост (апартаментна кооперация, жилищна сграда и т.н.). Позволява на администраторите да добавят, редактират и преглеждат приходи и разходи, да генерират отчети и да поддържат преглед на финансовото състояние на сградата.
+This project is a Django web application designed to facilitate the management of income and expenses in condominium properties (apartment buildings, residential complexes, etc.). It allows administrators to add, edit, and view income and expenses, generate reports, and maintain an overview of the building's financial status. Maintaining condominium record book, incoming and outgoing correspondence, and a bulletin board.
 
-## Функционалности (в процес на разработка)
+## Features
 
-*
-    **Създаване на сграда в режим на етажна собственост**
-    *   Добавяне на адрес, брой апартаменти, процент идеални части.
-    *   Добавяне на собственици, живущи, наематели, домашни любимци.
-*   **Потребителско Управление:**
-    *   Създаване и управление на потребителски акаунти с различни нива на достъп (администратор, счетоводител, собственик – може да се адаптира според нуждите).
-*   **Управление на Приходи:**
-    *   Добавяне на нови приходи с детайли като дата, сума, описание, източник (например, вноски от собственици, наеми).
-    *   Редактиране и изтриване на съществуващи приходи.
-*   **Управление на Разходи:**
-    *   Добавяне на нови разходи с детайли като дата, сума, описание, категория (например, поддръжка, ремонт, сметки).
-    *   Редактиране и изтриване на съществуващи разходи.
-*   **Отчети:**
-    *   Генериране на отчети за приходи и разходи за определен период от време.
-    *   Визуализация на наличности, дължими суми.
+* **Create a condominium property**
+  * From django admin add address, number of apartments, percentage of ideal parts.
+* **User Management:**
+  * From Django admin create and manage user accounts with different access levels'
+* **Condominium register**
+  * Add, edit or delete owners, residents, tenants, pets. Filter them by category, search through first or last name. 
+* **Condominium bulletin board**
+  * Add, edit or delete notes from the board. Filter them by status.
+* **Condominium record book**
+  * Add invoices for payments, mails to condominium from institutions, scanned protocols from general meetings, download or delete them.
+* **Management of income and expenses**
+  * under development
 
 
-## Изисквания
+## Requirements
 
-*   **Python:** 3.8 или по-нова версия
-*   **Django:** 4.0 или по-нова версия
-*   **PostgreSQL:** Препоръчително за production, може да се използва SQLite за разработка.
-*   **Други библиотеки:** (Може да се наложи да инсталирате допълнителни библиотеки, като например за експорт на данни или генериране на графики)
+* **Python:** 3.8 or newer
+* **Django:** 4.0 or newer
+* **PostgreSQL** 
+* **Django Debug Toolbar** if you don't want to use it, you'll have to remove it form installed apps in settings.py
+* **environ** if you want to use different app to import env variables, you should remove it form settings.py
+
 
 ## Environment variables
-'SECRET_KEY'
+Open .env.template file and add the values ​​of the required variables. Rename the file to .env
 
+## Installation
 
-## Инсталация
-
-1.  **Клонирайте репозиторито:**
+1. **Clone the repository:**
 
     ```bash
-    git clone [URL на репозиторито]
+    git clone [Repository URL]
     ```
 
-2.  **Създайте и активирайте виртуална среда:**
+2. **Create and activate a virtual environment:**
 
     ```bash
     python -m venv venv
-    source venv/bin/activate  # За Linux/macOS
-    venv\Scripts\activate  # За Windows
+    source venv/bin/activate  # For Linux/macOS
+    venv\Scripts\activate  # For Windows
     ```
 
-3.  **Инсталирайте зависимостите:**
+3. **Install dependencies:**
 
     ```bash
     pip install -r requirements.txt
     ```
 
-4.  **Настройте базата данни:**
+4. **Configure the database:**
 
-    *   Създайте PostgreSQL база данни (ако използвате PostgreSQL).
-    *   Отворете `settings.py` и променете настройките за базата данни (`DATABASES`).
+    * Create a PostgreSQL database (if using PostgreSQL).
+    * Open `settings.py` and update the database settings (`DATABASES`).
 
-5.  **Мигрирайте базата данни:**
+5. **Migrate the database:**
 
     ```bash
     python manage.py migrate
     ```
 
-6.  **Създайте суперпотребител:**
+6. **Create a superuser:**
 
     ```bash
     python manage.py createsuperuser
     ```
 
-## Стартиране на приложението
+## Running the application
 
 ```bash
 python manage.py runserver
 ```
 
-## Лиценз
+## License
 
-MIT License или Apache License 2.0
+MIT License or Apache License 2.0

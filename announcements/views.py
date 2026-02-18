@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from .models import Announcements
 from .forms import AnnouncementsFrom, AnnouncementsUpdateFrom, StatusFilterForm
 
-from condominium.mixin import UpdateDeleteMessageMixin
+from common.mixin import UpdateDeleteMessageMixin
 
 # Create your views here.
 

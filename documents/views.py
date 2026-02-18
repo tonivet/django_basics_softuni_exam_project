@@ -6,7 +6,7 @@ from django.views.generic import ListView, CreateView
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
 
-from condominium.mixin import UpdateDeleteMessageMixin
+from common.mixin import UpdateDeleteMessageMixin
 
 from .models import DocumentsModel
 from .forms import DocumentsForm

@@ -4,7 +4,7 @@ from django.views.generic import TemplateView, CreateView, UpdateView, DeleteVie
 from django.urls import reverse_lazy
 
 from .models import FlatResident
-from .mixin import UpdateDeleteMessageMixin
+from common.mixin import UpdateDeleteMessageMixin
 from .forms import FlatResidentForm, FlatResidentDeleteForm, ResidentSearchForm, ResidentRoleFilterForm
 
 # Create your views here.

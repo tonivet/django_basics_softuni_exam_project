@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import FileExtensionValidator
 
-from .validators import MaxFileSizeValidator
+from common.validators import MaxFileSizeValidator
 from .choices import DocumentTypeChoices
 
 # Create your models here.

@@ -1,7 +1,7 @@
 from django import forms
 
 from .models import FlatResident
-from .mixin import DisableFormFieldsMixin
+from common.mixin import DisableFormFieldsMixin
 from .choices import FlatRole
 
 class FlatResidentForm(forms.ModelForm):
