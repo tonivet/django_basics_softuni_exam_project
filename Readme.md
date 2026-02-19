@@ -58,6 +58,7 @@ Open .env.template file and add the values ​​of the required variables. Rena
 
     * Create a PostgreSQL database (if using PostgreSQL).
     * Open `settings.py` and update the database settings (`DATABASES`).
+    * `settings.py` is in the `core` folder.
 
 5. **Migrate the database:**
 
